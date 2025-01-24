@@ -25,7 +25,7 @@
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "rm -rf ./.vscode-test && vscode-test"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
