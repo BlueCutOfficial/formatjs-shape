@@ -2,7 +2,7 @@
 
 This is a Visual Studio Code extension to help introducing [Format.JS](https://formatjs.github.io/) into an existing codebase. Select a string or template string then format it automatically to follow formatjs spec.
 
-## Features
+## Usage
 
 1. Select a string in your code file, including quotes!
 2. Open the command palette (cmd + shif + P)
@@ -18,6 +18,13 @@ Your string is formatted to follow [Format.JS specification](https://formatjs.gi
 intl.formatMessage({ defaultMessage: 'Hello {username}' }, { username })
 ```
 
+## Features
+
+This extension supports:
+- Literal strings (between single or double quotes)
+- Template strings with or without any code expressions
+- Multiline template strings
+
 ## Extension Settings
 
 N/A
@@ -30,7 +37,8 @@ N/A
 
 ## Release Notes
 
-N/A
+0.1.0 - Supports template strings without code expressions and multiline template strings
+0.0.1 - Initial version
 
 ## For more information
 

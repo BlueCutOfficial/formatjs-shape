@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 			const selection = editor.selection;
 
 			const selectedText = document.getText(selection); // include quotes
-			const replacement = refactorMessage(selectedText);
+			const replacement = refactorMessage(selectedText.trim());
 
 			editor.edit(editBuilder => {
 				editBuilder.replace(selection, replacement);
@@ -27,12 +27,12 @@ export function refactorMessage(selectedText: string): string {
 	let replacement = `{ defaultMessage: ${selectedText} }`;
 
 	// Handle template strings
-	const quasis = selectedText.match(/\$\{[^\}]*\}/mg);
-	if (quasis?.length) {
+	const strExpressions = selectedText.match(/\$\{[^\}]*\}/mg);
+	if (strExpressions?.length) {
 		let i = 1;
 		const options = [];
-		for (const quasi of quasis) {
-			const expression = quasi.slice(2, quasi.length-1);
+		for (const strExpr of strExpressions) {
+			const expression = strExpr.slice(2, strExpr.length-1);
 
 			// Build an "ok" option name for the expression
 			let optionName = camelCase(expression.replace('this.', ''));
@@ -47,11 +47,18 @@ export function refactorMessage(selectedText: string): string {
 			);
 			replacement = replacement.replace(`\${${expression}`, `{${optionName}`);
 		}
-		const quote = trimedSelectedText.includes("'") ? '"' : "'";
-		replacement = `${replacement}, { ${options.join(', ')} }`.replaceAll('`', quote);
+		replacement = `${replacement}, { ${options.join(', ')} }`.replaceAll('`', quote(trimedSelectedText));
+	} else if (selectedText[0] === '`') { // A template string without any code expression
+		replacement = `${replacement}`.replaceAll('`', quote(trimedSelectedText));
 	}
 
-	return `intl.formatMessage(${replacement})`;
+	return (`intl.formatMessage(${replacement})`).replaceAll(/\s+/g, ' ');
+}
+
+// Returns ', or " if the argument contains a simple quote.
+// Works only if you pass the "trimed" string without the quotes encapsulating it.
+function quote(trimedSelectedText: string): string {
+	return trimedSelectedText.includes("'") ? '"' : "'";
 }
 
 export function deactivate() {}

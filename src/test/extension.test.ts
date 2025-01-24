@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import { refactorMessage } from '../extension';
 
 suite('Formatjs Shape Test Suite', () => {
-	test('it formats a simple string', () => {
+	test('it formats a simple literal string', () => {
 		const refactor = refactorMessage(`'Formatjs Shape Tests'`);
 		assert.strictEqual(
 			refactor,
@@ -10,8 +10,24 @@ suite('Formatjs Shape Test Suite', () => {
 		);
 	});
 
-	test('it formats a string with double quotes', () => {
+	test('it formats a literal string with double quotes', () => {
 		const refactor = refactorMessage(`"Let's test some template strings!"`);
+		assert.strictEqual(
+			refactor,
+			`intl.formatMessage({ defaultMessage: "Let's test some template strings!" })`
+		);
+	});
+
+	test('it formats a template string without any code', () => {
+		const refactor = refactorMessage(`\`Hello\``);
+		assert.strictEqual(
+			refactor,
+			`intl.formatMessage({ defaultMessage: 'Hello' })`
+		);
+	});
+
+	test('it formats a template string without any code containing a simple quote', () => {
+		const refactor = refactorMessage(`\`Let's test some template strings!\``);
 		assert.strictEqual(
 			refactor,
 			`intl.formatMessage({ defaultMessage: "Let's test some template strings!" })`
@@ -50,11 +66,22 @@ suite('Formatjs Shape Test Suite', () => {
 		);
 	});
 
-	test('it formats a template string containing several quasis', () => {
+	test('it formats a template string containing several code expressions', () => {
 		const refactor = refactorMessage(`\`Here are my favorite songs: \${this.getSongs().filter((song) => song.isFavirite())}. Hey \${username}, these are not my favorite, but do you like them? \${this.getSongs().filter((song) => !song.isFavirite())}\``);
 		assert.strictEqual(
 			refactor,
 			`intl.formatMessage({ defaultMessage: 'Here are my favorite songs: {option1}. Hey {username}, these are not my favorite, but do you like them? {option2}' }, { option1: this.getSongs().filter((song) => song.isFavirite()), username, option2: this.getSongs().filter((song) => !song.isFavirite()) })`
+		);
+	});
+
+	test('it formats a multiline string', () => {
+		const refactor = refactorMessage(`
+			\`Hello \${username},
+				how are you?\`
+		`);
+		assert.strictEqual(
+			refactor,
+			`intl.formatMessage({ defaultMessage: 'Hello {username}, how are you?' }, { username })`
 		);
 	});
 });
