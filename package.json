@@ -19,6 +19,10 @@
       {
         "command": "formatjs-shape.refactor",
         "title": "Refactor the selected message to formatjs"
+      },
+      {
+        "command": "formatjs-shape.refactorTemplate",
+        "title": "Refactor the selected HTML with a formatjs-like Handlebars helper"
       }
     ]
   },
