@@ -72,8 +72,9 @@ N/A
 
 ## Release Notes
 
-* 0.1.0 - Supports template strings without code expressions and multiline template strings
-* 0.0.1 - Initial version
+* 0.2.0 - Add a command to refactor Handlebars templates.
+* 0.1.0 - Supports template strings without code expressions and multiline template strings.
+* 0.0.1 - Initial version.
 
 ## For more information
 
