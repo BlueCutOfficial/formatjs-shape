@@ -3,7 +3,7 @@
   "displayName": "formatjs-shape",
   "description": "Visual Studio Code extension to help introducing formatjs into an existing codebase. Select a string or template string then format it automatically to follow formatjs spec.",
   "repository": "https://github.com/BlueCutOfficial/formatjs-shape",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Marine Dunstetter",
   "publisher": "bluecutofficial",
   "engines": {
